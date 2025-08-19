@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,7 +77,7 @@ public class MakerController {
             .name(makerDTO.getName())
             .build()
         );
-        return ResponseEntity.created(new URI("/api/maker/save")).build();
+        return ResponseEntity.created(new URI("/api/makers/save")).build();
     }
     
 
@@ -93,7 +94,28 @@ public class MakerController {
 
         return ResponseEntity.notFound().build();
     }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?>deleteMaker(@PathVariable Long id){
+        Optional<Maker> makerOptional = makerService.findById(id);
+
+        if (makerOptional.isPresent()) {
+            makerService.deleteById(id);
+            return ResponseEntity.ok("Registro eliminado");
+        }
+
+        return ResponseEntity.notFound().build();
+    } 
+
+
+
 }
+
+
+
+
+
 
 
 // https://www.youtube.com/watch?v=cXvDDvX16RM
